@@ -1,0 +1,40 @@
+import csv, random
+
+with open("vacancy.csv", encoding='utf-8') as file:
+    reader = list(csv.DictReader(file, delimiter=';'))
+
+    company = []
+    prof = []
+    salar = []
+    #создаю функцию быстрй сортирки
+    def quicksort(nums):
+        if len(nums) <= 1:
+            return nums
+        else:
+            q = random.choice(nums)
+        l_nums = [n for n in nums if n['Company_Size'] < q['Company_Size']]
+        e_nums = [q] * nums.count(q)
+        b_nums = [n for n in nums if n['Company_Size'] > q['Company_Size']]
+        return quicksort(l_nums) + e_nums + quicksort(b_nums)
+    reader = quicksort(reader)
+    #гоняю по циклу
+    for row in reader:
+        if row["Company"] not in company:
+            company.append(row)
+            salar.append(row['Salary'])
+
+            #ищу то, что просят в задании
+            if row["Role"] == "классный руководитель":
+                prof.append(row['Role'])
+
+
+
+
+
+
+
+
+with open("profession.txt", "w", encoding="utf-8", newline="") as file:
+    writer = csv.DictWriter(file,fieldnames=["Company", "Role", "Salary"])
+    writer.writeheader()
+    writer.writerows(reader)
