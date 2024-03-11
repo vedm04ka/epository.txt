@@ -1,0 +1,9 @@
+import csv
+
+with open("vacancy.csv", encoding='utf-8') as file:
+    reader = list(csv.DictReader(file, delimiter=';'))
+    reader = sorted(reader, key = lambda x: x["Company_Size"])
+with open("file.txt", "w", encoding="utf-8", newline="") as file:
+    writer = csv.DictWriter(file, fieldnames=["Salary", "Work_Type", "Company_Size", "Role", "Company"])
+    writer.writeheader()
+    writer.writerows(reader)
