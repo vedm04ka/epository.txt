@@ -1,0 +1,27 @@
+import csv
+
+with open("vacancy.csv", encoding='utf-8') as file:
+    reader = list(csv.DictReader(file, delimiter=';'))
+    reader = sorted(reader, key = lambda x: x["Company_Size"])
+    company = input()
+    while company != 'None':
+
+        left = 0
+        right = len(reader) - 1
+        while left <= right:
+            center = (left + right) // 2
+            if company == reader[center]['Company']:
+                prof = reader[center]
+                prof =prof['Role'].split()
+                print(f'В {prof["Company"]} найдена вакансия: {prof["Role"]} З/п составит: {prof["Salary"]}')
+                break
+            if company > reader[center]['Company']:
+                left = center + 1
+            else:
+                right = center - 1
+        company = input()
+
+with open("search.txt", "w", encoding="utf-8", newline="") as file:
+    writer = csv.DictWriter(file,fieldnames=["Salary","Work_Type", "Company_Size", "Role","Company"])
+    writer.writeheader()
+    writer.writerows(reader)
