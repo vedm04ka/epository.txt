@@ -1,0 +1,20 @@
+import csv
+
+with open("vacancy.csv", encoding='utf-8') as file:
+    reader = list(csv.DictReader(file, delimiter=';'))
+    reader = sorted(reader, key = lambda x: x["Company_Size"])
+    company = []
+    prof = []
+    salar = []
+    for row in reader:
+        if row['Company'] not in company:
+            company.append(row['Company'])
+            prof.append(row['Role'])
+            salar.append(row['Salary'])
+            print()
+
+
+with open("vacancy.new.csv", "w", encoding="utf-8", newline="") as file:
+    writer = csv.DictWriter(file,fieldnames=["Company", "Role", "Salary"])
+    writer.writeheader()
+    writer.writerows(prof)
